@@ -1,3 +1,24 @@
+// tri des film par note dans l'ordre decroissant
+const reponseBestScore = await fetch("http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score",
+                                    {method: "GET",
+                                    redirect: "follow"})
+                                    .then(response => response.json())
+                                    .catch(error => console.log('error', error)
+                                    );     
+// recuperation de la meilleur note                                                               
+const bestScore = JSON.stringify(reponseBestScore.results[0].imdb_score)
+const score = bestScore
+bestScore
+
+const reponse = await fetch("http://127.0.0.1:8000/api/v1/titles/?imdb_score=" + score + "&sort_by",
+{method: "GET",
+redirect: "follow"})
+.then(response => response.json())
+.catch(error => console.log('error', error)
+);     
+
+
+
 
 
 class Film {
