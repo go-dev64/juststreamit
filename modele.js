@@ -1,34 +1,4 @@
 const url = "http://127.0.0.1:8000/api/v1/titles/"
-/** 
-// recuperation des 7 premieres notes par categories
-var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
-  };
-  
-  
-let listElement = []
-let listallNotes = []
-    // boucle pour recuperer les note dans plusieurs page tans que listNote =7
-let numberPage = 0
-while (listElement.length < 7) {
-    numberPage++;
-    // Recuperation des element trier par imdb dans l'ordre decroissant(tous les films) 
-     const reponseBestScore = await fetch("http://127.0.0.1:8000/api/v1/titles/?genre=action&sort_by=-imdb_score", requestOptions)
-     .then(response => response.text())
-     .then(result => console.log(result))
-     .catch(error => console.log('error', error));
-    //ajout des element et notes des les arrays correspondant
-    for (const i in reponseBestScore.results) {
-        const element = reponseBestScore.results[i]
-        listElement.push(element)
-        //suppression  des doublons
-        if(!listallNotes.includes(parseFloat(element.imdb_score))){
-            listallNotes.push(parseFloat(element.imdb_score))
-        }
-    }
-}    
-*/
 
 
 class Film {
@@ -48,7 +18,7 @@ class Film {
     createHtmlElement () {
         // creation d'une balise pour le film
         const filmContainer = document.createElement("div")
-        filmContainer.dataset.id = this.index
+        filmContainer.dataset.id = this.id
         // creation d'une balise image du film
         const imageFilm = document.createElement("img")
         imageFilm.src = this.urlImg
@@ -58,7 +28,9 @@ class Film {
         const descriptionFilm = document.createElement("p")
         descriptionFilm.innerText = this.descritpion
         const filmBouton = document.createElement("button")
-        filmBouton.dataset.id = this.index
+        filmBouton.innerText = "Play"
+        const index = document.createElement("p")
+        index.innerText = this.index
 
         // rattachement des balise au element parent
         this.element.appendChild(filmContainer)
@@ -70,19 +42,16 @@ class Film {
 }
 
 
-
-
-
 class Categories {
     /**
-     * 
+     *  creation de la category de film
      * @param {element html} parentElement => emplacement de la categorie dans le html  
      * @param {string} categoryName
      */
 
     numberElementInCategories = 7
 
-    constructor(parentElement, categoryName="") {
+    constructor(parentElement, categoryName) {
         this.parent = document.querySelector(parentElement)
         this.category = categoryName
         this._idBestFilm = ""
@@ -90,22 +59,14 @@ class Categories {
     }
 
     /**
-     * @param {any} value
-     
-    set getIdFilm (value) {
-        this._idBestFilm = value
-    }
-    */
-
-
-    /**
      * récuperer une liste de 7 films tier dans l'ordre decroissant par score et votes de la categorie
-     * @returns {list of objet}
+     * creer les differents elements html de la categorie 
+     * @returns {element html}
      */
     async getFilms () {
+        console.log(this.category)
         if (this.category === "best_movies"){
             this.requestBestMovies()
-
 
         }else{
             this.requestCategory()
@@ -116,7 +77,7 @@ class Categories {
      * recuperation des film de la category et creation des film dans le parentHTML de la categorie
      */
     async requestCategory (){
-        const data = await fetch(`${url}?page_size=${this.numberElementInCategories}&genres=${this.category}&sort_by=-imdb_score,-votes`)
+        const data = await fetch(`${url}?page_size=${this.numberElementInCategories}&genre=${this.category}&sort_by=-imdb_score,-votes`)
         const jsonData = await data.json()
         const filmList = jsonData.results
         this.createFilm(filmList)
@@ -127,10 +88,11 @@ class Categories {
      * creation du meilleur film dans le HtmlParents => .best_film
      */
     async requestBestMovies () {
-        const data = await fetch(`${url}?page_size=${this.numberElementInCategories + 1}&genres=${this.category}&sort_by=-imdb_score,-votes`)
+        const data = await fetch(`${url}?page_size=${this.numberElementInCategories + 1}&genre=&sort_by=-imdb_score,-votes`)
         const jsonData = await data.json()
         const filmList = jsonData.results
         const bestFilm = filmList.shift()
+        console.log(bestFilm)
         this.createFilm(filmList)
         this.bestFilm(bestFilm.id)
     }
@@ -162,6 +124,9 @@ class Categories {
 }
 
 const bestMovies = new Categories(".carousel_best_movies", "best_movies")
+const action = new Categories(".carousel_cat1", "Action")
+const comedie = new Categories(".carousel_cat2", "Comedy")
+const scienceFiction = new Categories(".carousel_cat3", "Sci-Fi")
 
 
  
