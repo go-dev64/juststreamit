@@ -54,7 +54,6 @@ class Categories {
     constructor(parentElement, categoryName) {
         this.parent = document.querySelector(parentElement)
         this.category = categoryName
-        this._idBestFilm = ""
         this.getFilms()
     }
 
@@ -64,7 +63,6 @@ class Categories {
      * @returns {element html}
      */
     async getFilms () {
-        console.log(this.category)
         if (this.category === "best_movies"){
             this.requestBestMovies()
 
@@ -92,7 +90,6 @@ class Categories {
         const jsonData = await data.json()
         const filmList = jsonData.results
         const bestFilm = filmList.shift()
-        console.log(bestFilm)
         this.createFilm(filmList)
         this.bestFilm(bestFilm.id)
     }
@@ -107,6 +104,8 @@ class Categories {
             var film = new Film (this.parent, list[element], element)
             film.createHtmlElement()
         }
+
+    
     };
 
     /**
@@ -114,19 +113,23 @@ class Categories {
      * @param {id du film} idFilm 
      */
     async bestFilm(idFilm){
-        console.log(idFilm)
-        console.log(`${url}${idFilm}`)
         const response = await fetch(`${url}${idFilm}`)
         const jsonFilm = await response.json()
-        const racine = document.querySelector(".best_film")
+        const racine = document.querySelector("#best_film")
         new Film(racine, jsonFilm, 1).createHtmlElement()
+    };
+
+    setStyle () {
+        let ratio = this.items.length / this.options.slideVisible
+        this.container.style.width = (ratio * 100) + "%"
+        this.items.forEach(item => item.style.width = ((100/this.options.slideVisible) / ratio) + "%")
     }
 }
 
-const bestMovies = new Categories(".carousel_best_movies", "best_movies")
-const action = new Categories(".carousel_cat1", "Action")
-const comedie = new Categories(".carousel_cat2", "Comedy")
-const scienceFiction = new Categories(".carousel_cat3", "Sci-Fi")
+const bestMovies = new Categories("#carousel_best_movies", "best_movies")
+const action = new Categories("#carousel_cat1", "Action")
+const comedie = new Categories("#carousel_cat2", "Comedy")
+const scienceFiction = new Categories("#carousel_cat3", "Sci-Fi")
 
 
  

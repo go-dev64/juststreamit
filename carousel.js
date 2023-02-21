@@ -14,26 +14,29 @@ class Carousel {
             slideToScroll: 1,
             slideVisible: 1
             }, options)
-            this.children = [].slice.call(element.children)
-            let toto = this.createDivWithClass("carousel")
-            this.container = this.createDivWithClass("carousel__container")
-            toto.appendChild(this.container)
-            this.element.appendChild(toto)
-            this.children.forEach((child) => {
-                let item = this.createDivWithClass("carousel__item")
-                //item.style.width = ((100 / this.options.slideVisible) / ratio) + "%"
-                item.appendChild(child)
-                this.container.appendChild(item)
-            })
+        let chidList = [element.children]
+        let root = this.createDivWithClass('carousel')
+        this.container = this.createDivWithClass("carousel__container")
+        root.appendChild(this.container)
+        this.element.appendChild(root)
+        const x = chidList.shift()
+        this.items = chidList.map((e) => {
+            console.log(e)
+            let item = this.createDivWithClass("carousel__item")
+            item.appendChild(e)
+            this.container.appendChild(item)
+            return item
+        })
+        this.setStyle()
     }
+
+
 
     setStyle () {
-        let ratio = this.children.length / this.options.slideVisible
+        let ratio = this.items.length / this.options.slideVisible
         this.container.style.width = (ratio * 100) + "%"
+        this.items.forEach(item => item.style.width = ((100/this.options.slideVisible) / ratio) + "%")
     }
-
-
-
 
     /**
      * 
@@ -49,11 +52,9 @@ class Carousel {
 }
 
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    new Carousel(document.querySelector("#carousel1"), {
+    new Carousel(document.querySelector("#carousel_best_movies"), {
         slideToScroll: 3,
         slideVisible: 3
     })

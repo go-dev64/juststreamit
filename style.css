@@ -1,0 +1,27 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: sans-serif;
+    color:whitesmoke;
+    padding: 50px;
+    background-color: black;
+    line-height: 1;
+}
+
+.carousel {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel__containre::after {
+    content: '';
+    clear: both;
+    display: table;
+}
+.container__item {
+    float: left;
+}
