@@ -31,7 +31,7 @@ while (listElement.length < 7) {
 */
 
 
-const Film = class {
+class Film {
     /**
      * @param {element HTML} elementRacine 
      * @param {Objet} option 
@@ -69,33 +69,72 @@ const Film = class {
     }    
 }
 
-const numberElementInCategories = 7
-const Categories = class {
+
+
+
+
+class Categories {
     /**
      * 
      * @param {element html} parentElement => emplacement de la categorie dans le html  
      * @param {string} categoryName
      */
 
+    numberElementInCategories = 7
+
     constructor(parentElement, categoryName="") {
         this.parent = document.querySelector(parentElement)
-        this.category=categoryName
-        this.idBestFilm = 
-        this.requestFilms()
+        this.category = categoryName
+        this._idBestFilm = ""
+        this.getFilms()
     }
+
+    /**
+     * @param {any} value
+     
+    set getIdFilm (value) {
+        this._idBestFilm = value
+    }
+    */
+
 
     /**
      * récuperer une liste de 7 films tier dans l'ordre decroissant par score et votes de la categorie
      * @returns {list of objet}
      */
-    async requestFilms () {
-        const data = await fetch(`${url}?page_size=${numberElementInCategories}&genres=${this.category}&sort_by=-imdb_score,-votes`)
-        const jsonData = await data.json()
-        const filmElement = jsonData.results
-        this.createFilm(filmElement)
-        const idBestFilm = JSON.stringify(filmElement[0].id)
-        this.idBestFilm = idBestFilm
+    async getFilms () {
+        if (this.category === "best_movies"){
+            this.requestBestMovies()
+
+
+        }else{
+            this.requestCategory()
+        }
     };
+
+    /**
+     * recuperation des film de la category et creation des film dans le parentHTML de la categorie
+     */
+    async requestCategory (){
+        const data = await fetch(`${url}?page_size=${this.numberElementInCategories}&genres=${this.category}&sort_by=-imdb_score,-votes`)
+        const jsonData = await data.json()
+        const filmList = jsonData.results
+        this.createFilm(filmList)
+    }
+
+    /**
+     * recuperation des la liste des films des meilleurs film
+     * creation du meilleur film dans le HtmlParents => .best_film
+     */
+    async requestBestMovies () {
+        const data = await fetch(`${url}?page_size=${this.numberElementInCategories + 1}&genres=${this.category}&sort_by=-imdb_score,-votes`)
+        const jsonData = await data.json()
+        const filmList = jsonData.results
+        const bestFilm = filmList.shift()
+        this.createFilm(filmList)
+        this.bestFilm(bestFilm.id)
+    }
+
 
     /**
      * creation des instance dobjet Film pour chaque element de la liste.
@@ -108,18 +147,21 @@ const Categories = class {
         }
     };
 
-    async bestFilm(){
-        const response = await fetch(`${url}${this.idBestFilm}`)
+    /**
+     * creation du film
+     * @param {id du film} idFilm 
+     */
+    async bestFilm(idFilm){
+        console.log(idFilm)
+        console.log(`${url}${idFilm}`)
+        const response = await fetch(`${url}${idFilm}`)
         const jsonFilm = await response.json()
-        const film = jsonFilm.results
         const racine = document.querySelector(".best_film")
-        new Film(racine, film, 1).createHtmlElement()
+        new Film(racine, jsonFilm, 1).createHtmlElement()
     }
 }
 
-const bestMovies = new Categories(".carousel_best_movies", "")
-bestMovies.bestFilm()
-const toto = bestMovies.idBestFilm
-console.log(toto)
+const bestMovies = new Categories(".carousel_best_movies", "best_movies")
+
 
  
