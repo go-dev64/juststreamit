@@ -2,26 +2,92 @@ body, html {
     margin: 0;
     padding: 0;
     min-height: 100%;
+    background-color: black;
 }
 
 body {
     font-family: sans-serif;
     color:whitesmoke;
-    padding: 50px;
-    background-color: black;
+    padding: 10px;
     line-height: 1;
 }
+
+header {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+#logo {
+    height: 100%;
+    width: 120px;
+}
+
+.nav{
+    width: 100%;
+    display: inline-flexbox;
+    margin:auto;
+}
+
+main {
+    display: flex;
+    padding: 50px;
+    flex-direction: column;
+}
+
+article {
+    display: flex;
+    flex-direction: row;
+}
+
+h3, p , button {
+    display: none;
+}
+
+#best_film {
+    float: inline-end;
+}
+
+#best_film .container_item > data {
+    height: 20%;
+
+}
+
+#best_film h3  {
+    display: flex;
+}
+
+#best_film p  {
+    display: flex;
+}
+
+#best_film button  {
+    display: flex;
+}
+
+/** 
+carousel
+*/
 
 .carousel {
     position: relative;
     overflow: hidden;
 }
 
-.carousel__containre::after {
+.carousel__container::after {
     content: '';
     clear: both;
     display: table;
 }
+
+.carousel__container .div{
+    width: 100%;
+}
 .container__item {
     float: left;
+    padding: 15px;
+    
 }
+
