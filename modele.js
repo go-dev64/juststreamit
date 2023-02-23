@@ -44,7 +44,6 @@ class Film {
     this.filmContainer.appendChild(this.titleFilm)
     this.filmContainer.appendChild(this.filmBouton)
     this.filmContainer.appendChild(this.descriptionFilm)
-    
   }
 }
 
@@ -60,9 +59,9 @@ class Categories {
   constructor (parentElement, categoryName) {
     this.parent = document.querySelector(parentElement)
     this.category = categoryName
-    this.listFilms = []
     this.createHtmlElementCarousel()
-    this.getFilms()
+    // eslint-disable-next-line no-return-assign
+    this.listFilms = this.getFilms()
   }
 
   /**
@@ -72,9 +71,11 @@ class Categories {
      */
   async getFilms () {
     if (this.category === 'best_movies') {
-      this.requestBestMovies()
+      const theList = this.requestBestMovies()
+      return theList
     } else {
-      this.requestCategory()
+      const theList = this.requestCategory()
+      return theList
     }
   };
 
@@ -85,7 +86,8 @@ class Categories {
     const data = await fetch(`${url}?page_size=${this.numberElementInCategories}&genre=${this.category}&sort_by=-imdb_score,-votes`)
     const jsonData = await data.json()
     const filmList = jsonData.results
-    this.createFilm(filmList)
+    const list = this.createFilm(filmList)
+    return list
   }
 
   /**
@@ -97,8 +99,9 @@ class Categories {
     const jsonData = await data.json()
     const filmList = jsonData.results
     const bestFilm = filmList.shift()
-    this.createFilm(filmList)
+    const list = this.createFilm(filmList)
     this.bestFilm(bestFilm.id)
+    return list
   }
 
   /**
@@ -118,11 +121,13 @@ class Categories {
      * instance stoker dans this.filmObjectList.
      */
   createFilm (list) {
+    const array = []
     for (const element in list) {
       const film = new Film(this.carouselContainer, list[element], element)
       film.createHtmlElement()
-      this.listFilms[element] = film
+      array[element] = film
     }
+    return array
   };
 
   /**
@@ -132,7 +137,6 @@ class Categories {
   async bestFilm (idFilm) {
     const response = await fetch(`${url}${idFilm}`)
     const jsonFilm = await response.json()
-    console.log(jsonFilm)
     const racine = document.querySelector('#best_film')
     new Film(racine, jsonFilm, 1).createHtmlElement()
   }
@@ -140,7 +144,7 @@ class Categories {
 
 // eslint-disable-next-line no-unused-vars
 const bestMovies = new Categories('#carousel_best_movies', 'best_movies')
-//const action = new Categories('#carousel_cat1', 'Action')
+const action = new Categories('#carousel_cat1', 'Action')
 //const comedie = new Categories('#carousel_cat2', 'Comedy')
 //const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
 
@@ -158,20 +162,68 @@ class Carousel {
       slideToScroll: 1,
       slideVisible: 1
     }, options)
-    this.carousel = this.object.carousel
-    this.carouselContainer = this.object.carouselContainer
-    this.items = this.object.listFilms
+    this.carousel = this.object.carousel // let root grafikart
+    this.carouselContainer = this.object.carouselContainer // let container grafikart
+    const items = objectCategory.listFilms
+    items.then(element => console.log(element))
+    console.log(items)
+    this.currentItem = 0
     this.setStyle()
-    debugger
-  }
+    this.createNavigation()
+  };
 
+  /**
+   * Redimensions les elements en fonction de la taille de la fenetres
+   */
   setStyle () {
     const ratio = this.object.numberElementInCategories / this.options.slideVisible
     this.carouselContainer.style.width = (ratio * 100) + '%'
     // eslint-disable-next-line no-return-assign
-    //this.item.forEach(item => item.style.width = ((100 / this.options.slideVisible) / ratio) + '%')
-  }
-  
+    //this.items.style.width = ((100 / this.options.slideVisible) / ratio + '%')
+
+  };
+
+  /**
+   * creation de d'un div avec une class definie
+   * @param {string} className = nom de la class de la div
+   * @returns nouvelle div
+   */
+  createDivWithClass (className) {
+    const div = document.createElement('div')
+    div.setAttribute('class', className)
+    return div
+  };
+
+  /**
+   * creation des bouton de navigation du carousel
+   */
+  createNavigation () {
+    const nextButton = this.createDivWithClass('carousel__next')
+    const prevButton = this.createDivWithClass('carousel__prev')
+    this.carousel.appendChild(nextButton)
+    this.carousel.appendChild(prevButton)
+    nextButton.addEventListener('click', this.next.bind(this))
+    prevButton.addEventListener('clock', this.prev.bind(this))
+  };
+
+  next () {
+    this.goToItem(this.currentItem + this.options.slideToScroll)
+  };
+
+  prev () {
+    this.goToItem(this.currentItem - this.options.slideToScroll)
+  };
+
+  /**
+   * Deplace le carousel vers l'element cible
+   * @param {number} index.
+   */
+  goToItem (index) {
+    // eslint-disable-next-line prefer-const
+    let translateX = index * -100 / this.object.numberElementInCategories
+    this.carouselContainer.style.transform = 'translate3d(' + translateX + '%, 0, 0)'
+    this.currentItem = index
+  };
 }
 
 document.addEventListener('DOMContentLoaded', function () {

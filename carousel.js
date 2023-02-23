@@ -11,8 +11,6 @@ class Carousel {
       slideToScroll: 1,
       slideVisible: 1
     }, options)
-
-    
   }
   /**
     this.items = chidList.map((e) => {
@@ -30,7 +28,6 @@ class Carousel {
     // eslint-disable-next-line no-return-assign
     this.items.forEach(item => item.style.width = ((100 / this.options.slideVisible) / ratio) + '%')
   }
-  
 }
 
 document.addEventListener('DOMContentLoaded', function () {
