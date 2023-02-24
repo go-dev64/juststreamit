@@ -17,20 +17,18 @@ class Film {
   }
 
   createHtmlElement () {
-    // creation d'une div pour le container__item
-    this.containerItem = document.createElement('div')
-    this.containerItem.className = 'container__item'
     // creation d'une balise pour le film
     this.filmContainer = document.createElement('div')
     this.filmContainer.dataset.id = this.id
+    this.filmContainer.className = 'item'
     // creation d'une balise image du film
     this.imageContainer = document.createElement('div')
-    this.imageContainer.className = 'image__container'
+    this.imageContainer.className = 'item__image'
     this.imageFilm = document.createElement('img')
     this.imageFilm.src = this.urlImg
     // creation d'une balise container pour les infos du film
     this.infoContainer = document.createElement('div')
-    this.infoContainer.className = 'info__container'
+    this.infoContainer.className = 'item__info'
     this.titleFilm = document.createElement('h3')
     this.titleFilm.innerText = this.title
     this.filmBouton = document.createElement('button')
@@ -42,8 +40,7 @@ class Film {
     this.index.innerText = this.index
 
     // rattachement des balise au element parent
-    this.element.appendChild(this.containerItem)
-    this.containerItem.appendChild(this.filmContainer)
+    this.element.appendChild(this.filmContainer)
     this.filmContainer.appendChild(this.imageContainer)
     this.filmContainer.appendChild(this.infoContainer)
     this.imageContainer.appendChild(this.imageFilm)
@@ -179,7 +176,7 @@ class Carousel {
     let options = this.options.slideVisible
     // eslint-disable-next-line no-return-assign
     list.forEach(function (element) {
-      element.containerItem.style.width = ((100 / options) / ratio + '%')
+      element.filmContainer.style.width = ((100 / options) / ratio + '%')
     })
   };
 
@@ -235,7 +232,7 @@ const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-new
   new Carousel(bestMovies, {
-    slideToScroll: 3,
+    slideToScroll: 1,
     slideVisible: 3
   })
 })

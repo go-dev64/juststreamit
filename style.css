@@ -2,14 +2,16 @@ body, html {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background-color: black;
+    overflow-x: hidden;
+    
 }
 
 body {
     font-family: sans-serif;
     color:whitesmoke;
+    background-color: black;
     padding: 10px;
-    line-height: 1;
+    line-height: 1.4;
 }
 
 /** headers */
@@ -29,6 +31,7 @@ header {
 
 #logo{
     height: 100%;
+    margin: 0px;
 }
 
 .nav{
@@ -45,47 +48,58 @@ header {
 /** headers */
 
 /** main */
-main {
+
+/** best film  */
+
+#best_film .item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#best_film .item__image {
+    max-height: 200px;
+    width: auto;
+    position: right;
+    order: 2;
+}
+
+#best_film img {
+    max-height: 200px;
+    width: auto;
+}
+
+#best_film .item__info{
     display: flex;
     flex-direction: column;
 }
 
-article {
-    display: flex;
-    flex-direction: row;
+
+
+/** best film  */
+
+.item {
+  margin: 40px 10px;
+  background-color: black;
+  box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+  transition: transform 0.3s;
+  transform: translate3d(0, -1px, 0);
 }
 
-h3, p , button {
+.item:hover {
+    transform: translate3d(0, -10px, 0);
+}
+
+.item img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+
+.item__info {
     display: none;
-}
-
-/** best film */
-
-#best_film {
-    display: flex;
-
-}
-
-#best_film .container__item > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-}
-
-#best_film h3, #best_film p ,#best_film button {
-    display: flex;
-}
-
-#best_film .image__container {
-    order: 2;
-    align-items: stretch;
-}
-/** best film */
-
-
-.items {
-    position: relative;
 }
 
 /** 
@@ -93,12 +107,19 @@ carousel
 */
 
 .carousel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     position: relative;
+    align-items: center;
     width: 100%;
     /**width: 1200px;*/
+}
+
+.carousel__container{
+    display: flex;
+    flex-direction: row;
+    
+    align-items: stretch;
+    transition: transform 0.3s;
+    transform: translate3d(0%, 0px, 0px);
 }
 
 .carousel__container::after {
@@ -107,18 +128,8 @@ carousel
     display: table;
 }
 
-.carousel__container{
-    display: flex;
-    align-content: center;
-    transition: transform 0.3s;
-    transform: translate3d(0%, 0px, 0px);
-}
-
-.carousel__container .div{
-    width: 100%;
-}
-.container__item {
-    
+.carousel__item {
+    float: left;
 }
 
 .carousel__next, .carousel__prev {
