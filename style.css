@@ -12,28 +12,41 @@ body {
     line-height: 1;
 }
 
+/** headers */
 header {
     width: 100%;
-    height: 80px;
+    height: 50px;
     display: flex;
+    align-items: center;
     flex-direction: row;
     
 }
 
-#logo {
+.logo {
     height: 100%;
     width: 120px;
 }
 
+#logo{
+    height: 100%;
+}
+
 .nav{
     width: 100%;
-    display: inline-flexbox;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin:auto;
 }
 
+.nav_link {
+    padding:10px
+}
+/** headers */
+
+/** main */
 main {
     display: flex;
-    padding: 50px;
     flex-direction: column;
 }
 
@@ -46,25 +59,33 @@ h3, p , button {
     display: none;
 }
 
+/** best film */
+
 #best_film {
-    float: inline-end;
-}
-
-#best_film .container_item > data {
-    height: 20%;
+    display: flex;
 
 }
 
-#best_film h3  {
+#best_film .container__item > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+#best_film h3, #best_film p ,#best_film button {
     display: flex;
 }
 
-#best_film p  {
-    display: flex;
+#best_film .image__container {
+    order: 2;
+    align-items: stretch;
 }
+/** best film */
 
-#best_film button  {
-    display: flex;
+
+.items {
+    position: relative;
 }
 
 /** 
@@ -72,9 +93,11 @@ carousel
 */
 
 .carousel {
-    display: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: relative;
-    overflow: hidden;
+    /**width: 1200px;*/
 }
 
 .carousel__container::after {
@@ -84,27 +107,29 @@ carousel
 }
 
 .carousel__container{
-    display: inline-flex;
+    display: flex;
+    align-content: center;
     transition: transform 0.3s;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0%, 0px, 0px);
 }
 
 .carousel__container .div{
     width: 100%;
 }
 .container__item {
-    float: left;
-    padding: 15px;
     
 }
 
 .carousel__next, .carousel__prev {
+    position: absolute;
     width: 50px;
     height: 50px;
     background: #fff url(img/fleches_droite.svg)center center no-repeat;
     background-size: 70px 70px;
     border-radius: 50%;
-    right: 20%;
+    top: 50%;
+    margin-top: -25px;
+    right: 0%;
     box-shadow: 0 15px 35px #3232321a, 0 5px 15px #0000001a;
     cursor: pointer;
     transition: transform 0.3s;
@@ -115,14 +140,13 @@ carousel
 }
 
 .carousel__prev{
-    display: block;
-    background: #fff url(img/fleche_gauche.svg)center center no-repeat;
-    width: 50px;
-    height: 50px;
-    background-size: 70px 70px;
-    border-radius: 50%;
-    right: auto;
-    left: -20px;
+   background-image: url(img/fleche_gauche.svg);
+   right: auto;
+   left: -20px;
+
 }
 
+.image__container{
+    margin: 20px;
+}
 

@@ -24,9 +24,13 @@ class Film {
     this.filmContainer = document.createElement('div')
     this.filmContainer.dataset.id = this.id
     // creation d'une balise image du film
+    this.imageContainer = document.createElement('div')
+    this.imageContainer.className = 'image__container'
     this.imageFilm = document.createElement('img')
     this.imageFilm.src = this.urlImg
-    // creation d'une balise tititre du film
+    // creation d'une balise container pour les infos du film
+    this.infoContainer = document.createElement('div')
+    this.infoContainer.className = 'info__container'
     this.titleFilm = document.createElement('h3')
     this.titleFilm.innerText = this.title
     this.filmBouton = document.createElement('button')
@@ -40,10 +44,12 @@ class Film {
     // rattachement des balise au element parent
     this.element.appendChild(this.containerItem)
     this.containerItem.appendChild(this.filmContainer)
-    this.filmContainer.appendChild(this.imageFilm)
-    this.filmContainer.appendChild(this.titleFilm)
-    this.filmContainer.appendChild(this.filmBouton)
-    this.filmContainer.appendChild(this.descriptionFilm)
+    this.filmContainer.appendChild(this.imageContainer)
+    this.filmContainer.appendChild(this.infoContainer)
+    this.imageContainer.appendChild(this.imageFilm)
+    this.infoContainer.appendChild(this.titleFilm)
+    this.infoContainer.appendChild(this.filmBouton)
+    this.infoContainer.appendChild(this.descriptionFilm)
   }
 }
 
@@ -54,9 +60,8 @@ class Categories {
      * @param {string} categoryName
      */
 
-  numberElementInCategories = 7
-
   constructor (parentElement, categoryName) {
+    this.numberElementInCategories = 7
     this.parent = document.querySelector(parentElement)
     this.category = categoryName
     this.createHtmlElementCarousel()
@@ -142,12 +147,6 @@ class Categories {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-const bestMovies = new Categories('#carousel_best_movies', 'best_movies')
-const action = new Categories('#carousel_cat1', 'Action')
-//const comedie = new Categories('#carousel_cat2', 'Comedy')
-//const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
-
 class Carousel {
   /**
       * @param {object} object category
@@ -164,23 +163,25 @@ class Carousel {
     }, options)
     this.carousel = this.object.carousel // let root grafikart
     this.carouselContainer = this.object.carouselContainer // let container grafikart
-    const items = objectCategory.listFilms
-    items.then(element => console.log(element))
-    console.log(items)
     this.currentItem = 0
-    this.setStyle()
+    objectCategory.listFilms.then(element => this.setStyle(element))
     this.createNavigation()
   };
 
   /**
    * Redimensions les elements en fonction de la taille de la fenetres
    */
-  setStyle () {
+  setStyle (list = []) {
+    // eslint-disable-next-line no-undef
     const ratio = this.object.numberElementInCategories / this.options.slideVisible
+    console.log(ratio)
     this.carouselContainer.style.width = (ratio * 100) + '%'
+    const options = this.options.slideVisible
     // eslint-disable-next-line no-return-assign
-    //this.items.style.width = ((100 / this.options.slideVisible) / ratio + '%')
-
+    list.forEach(function (element) {
+      console.log(element)
+      element.containerItem.style.width = ((100 / options) / ratio + '%')
+    })
   };
 
   /**
@@ -203,7 +204,7 @@ class Carousel {
     this.carousel.appendChild(nextButton)
     this.carousel.appendChild(prevButton)
     nextButton.addEventListener('click', this.next.bind(this))
-    prevButton.addEventListener('clock', this.prev.bind(this))
+    prevButton.addEventListener('click', this.prev.bind(this))
   };
 
   next () {
@@ -220,16 +221,22 @@ class Carousel {
    */
   goToItem (index) {
     // eslint-disable-next-line prefer-const
-    let translateX = index * -100 / this.object.numberElementInCategories
+    let translateX = index * -100 / this.options.slideVisible
     this.carouselContainer.style.transform = 'translate3d(' + translateX + '%, 0, 0)'
     this.currentItem = index
   };
 }
 
+// eslint-disable-next-line no-unused-vars
+const bestMovies = new Categories('#carousel_best_movies', 'best_movies')
+const action = new Categories('#carousel_cat1', 'Action')
+const comedie = new Categories('#carousel_cat2', 'Comedy')
+const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
+
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-new
   new Carousel(bestMovies, {
-    slideToScroll: 3,
+    slideToScroll: 1,
     slideVisible: 3
   })
 })
