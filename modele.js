@@ -176,10 +176,9 @@ class Carousel {
     const ratio = this.object.numberElementInCategories / this.options.slideVisible
     console.log(ratio)
     this.carouselContainer.style.width = (ratio * 100) + '%'
-    const options = this.options.slideVisible
+    let options = this.options.slideVisible
     // eslint-disable-next-line no-return-assign
     list.forEach(function (element) {
-      console.log(element)
       element.containerItem.style.width = ((100 / options) / ratio + '%')
     })
   };
@@ -236,7 +235,7 @@ const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-new
   new Carousel(bestMovies, {
-    slideToScroll: 1,
+    slideToScroll: 3,
     slideVisible: 3
   })
 })

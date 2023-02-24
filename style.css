@@ -97,6 +97,7 @@ carousel
     align-items: center;
     justify-content: space-between;
     position: relative;
+    width: 100%;
     /**width: 1200px;*/
 }
 
@@ -129,7 +130,7 @@ carousel
     border-radius: 50%;
     top: 50%;
     margin-top: -25px;
-    right: 0%;
+    right: 0;
     box-shadow: 0 15px 35px #3232321a, 0 5px 15px #0000001a;
     cursor: pointer;
     transition: transform 0.3s;
@@ -142,11 +143,12 @@ carousel
 .carousel__prev{
    background-image: url(img/fleche_gauche.svg);
    right: auto;
-   left: -20px;
+   left: 0px;
 
 }
 
-.image__container{
+img{
     margin: 20px;
+
 }
 
