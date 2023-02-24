@@ -51,27 +51,32 @@ header {
 
 /** best film  */
 
+#best_film {
+
+}
+
 #best_film .item {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin: 0;
+    
 }
 
 #best_film .item__image {
-    max-height: 200px;
-    width: auto;
+    width: 50%;
     position: right;
     order: 2;
 }
 
 #best_film img {
-    max-height: 200px;
-    width: auto;
 }
 
 #best_film .item__info{
+    width: 50%;
     display: flex;
     flex-direction: column;
+
 }
 
 
