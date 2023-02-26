@@ -216,8 +216,14 @@ class Carousel {
    * @param {number} index.
    */
   goToItem (index) {
+
+    if (index < 0) {
+      index = this.object.numberElementInCategories - this.options.slideVisible
+    } else if (index >= this.object.numberElementInCategories) {
+      index = 0
+    }
     // eslint-disable-next-line prefer-const
-    let translateX = index * -100 / this.options.slideVisible
+    let translateX = index * -100 / this.object.numberElementInCategories
     this.carouselContainer.style.transform = 'translate3d(' + translateX + '%, 0, 0)'
     this.currentItem = index
   };
@@ -232,7 +238,7 @@ const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-new
   new Carousel(bestMovies, {
-    slideToScroll: 1,
+    slideToScroll: 2,
     slideVisible: 3
   })
 })

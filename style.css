@@ -70,6 +70,8 @@ header {
 }
 
 #best_film img {
+    height: 100%;
+    width: auto;
 }
 
 #best_film .item__info{
@@ -121,8 +123,7 @@ carousel
 .carousel__container{
     display: flex;
     flex-direction: row;
-    
-    align-items: stretch;
+  
     transition: transform 0.3s;
     transform: translate3d(0%, 0px, 0px);
 }
