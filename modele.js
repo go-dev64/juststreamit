@@ -146,23 +146,34 @@ class Categories {
 
 class Carousel {
   /**
+   * This callback type is called `requestCallback` and is displayed as a global symbol.
+   *
+   * @callback moveCallback
+   * @param {number} index
+   */
+
+  /**
       * @param {object} object category
        * @param {Objet} option
-       * @param {Objet} options.slideToScroll => nombre d'éléments à faire defiler
-       * @param {Objet} options.slideVisible => nombre d'éléments visible dans un slide
+       * @param {Objet} [options.slideToScroll = 1]=> nombre d'éléments à faire defiler
+       * @param {Objet} [options.slideVisible = 1] => nombre d'éléments visible dans un slide
+       * @param {Boolean} [options.loop = false] => doit on looper en fin de carousel
        */
   constructor (objectCategory, options = {}) {
     this.object = objectCategory
     this.parent = this.object.parent
     this.options = Object.assign({}, {
       slideToScroll: 1,
-      slideVisible: 1
+      slideVisible: 1,
+      loop :false
     }, options)
     this.carousel = this.object.carousel // let root grafikart
     this.carouselContainer = this.object.carouselContainer // let container grafikart
     this.currentItem = 0
+    this.moveCallbacks = []
     objectCategory.listFilms.then(element => this.setStyle(element))
     this.createNavigation()
+    this.moveCallbacks.forEach(cb => cb(0))
   };
 
   /**
@@ -201,32 +212,57 @@ class Carousel {
     this.carousel.appendChild(prevButton)
     nextButton.addEventListener('click', this.next.bind(this))
     prevButton.addEventListener('click', this.prev.bind(this))
-  };
+    if (this.options.loop === true) {
+      return
+    }
+    this.onMove(index => {
+      if (index === 0) {
+        prevButton.classList.add('carousel__prev--hidden')
+      } else {
+        prevButton.classList.remove('carousel__prev--hidden')
+      }
+      if(this.currentItem + this.options.slideVisible + 1 >= this.object.numberElementInCategories) {
+        nextButton.classList.add('carousel__next--hidden')
+      } else {
+        nextButton.classList.remove('carousel__next--hidden')
+      } 
+    })
+  }
 
   next () {
     this.goToItem(this.currentItem + this.options.slideToScroll)
-  };
+  }
 
   prev () {
     this.goToItem(this.currentItem - this.options.slideToScroll)
-  };
+  }
 
   /**
    * Deplace le carousel vers l'element cible
    * @param {number} index.
    */
   goToItem (index) {
-
+    debugger
     if (index < 0) {
       index = this.object.numberElementInCategories - this.options.slideVisible
-    } else if (index >= this.object.numberElementInCategories) {
+    } else if (index >= this.object.numberElementInCategories || (this.currentItem + this.options.slideVisible >= this.object.numberElementInCategories && index > this.currentItem)) {
       index = 0
     }
     // eslint-disable-next-line prefer-const
     let translateX = index * -100 / this.object.numberElementInCategories
     this.carouselContainer.style.transform = 'translate3d(' + translateX + '%, 0, 0)'
     this.currentItem = index
-  };
+    this.moveCallbacks.forEach(cb => cb(index))
+  }
+
+  /**
+   * Rajoute un écouteur qui écoute le déplacement du carousel
+   * @param {moveCallback} cb
+   */
+   onMove (cb) {
+    this.moveCallbacks.push(cb)
+  }
+
 }
 
 // eslint-disable-next-line no-unused-vars
