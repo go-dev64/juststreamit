@@ -21,7 +21,13 @@ header {
     display: flex;
     align-items: center;
     flex-direction: row;
-    
+}
+
+h1 {
+    color: #fffefecd;
+    font-style: italic;
+    border-bottom: 3px solid  #fffefecd;
+    font-size: 30px;
 }
 
 .logo {
@@ -85,29 +91,6 @@ header {
 
 /** best film  */
 
-.item {
-  margin: 40px 10px;
-  background-color: black;
-  box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
-  transition: transform 0.3s;
-  transform: translate3d(0, -1px, 0);
-}
-
-.item:hover {
-    transform: translate3d(0, -10px, 0);
-}
-
-.item img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-
-
-.item__info {
-    display: none;
-}
 
 /** 
 carousel
@@ -172,4 +155,28 @@ img{
     margin: 20px;
 
 }
+
+.item {
+    margin: 40px 10px;
+    background-color: black;
+    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
+    transition: transform 0.3s;
+    transform: translate3d(0, -1px, 0);
+  }
+  
+  .item:hover {
+      transform: translate3d(0, -10px, 0);
+  }
+  
+  .item img {
+      display: block;
+      width: 100%;
+      height: auto;
+  }
+  
+  
+  
+  .item__info {
+      display: none;
+  }
 

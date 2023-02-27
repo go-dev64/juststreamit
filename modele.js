@@ -106,15 +106,40 @@ class Categories {
     return list
   }
 
+  defineTitleCategory (nameOfCategory) {
+    let title = ''
+    switch (nameOfCategory) {
+      case 'best_movies':
+        title = 'Les Meilleures Films'
+        break
+      case 'Action':
+        title = 'Les Meilleures Films d\'Action'
+        break
+      case 'Comedy':
+        title = 'Les Meilleures Comédies'
+        break
+      case 'Sci-Fi':
+        title = 'Les Meilleures Films de Sciences-Fiction'
+        break
+      default:
+        title = 'Categorie'
+    }
+    return title
+  }
+
   /**
    * creation des element html pour le carousel
    */
   createHtmlElementCarousel () {
     this.carousel = document.createElement('div')
     this.carousel.className = 'carousel'
+    this.title = document.createElement('h1')
+    this.title.className = 'category_title'
+    this.title.innerText = this.defineTitleCategory(this.category)
     this.carouselContainer = document.createElement('div')
     this.carouselContainer.className = 'carousel__container'
     this.parent.appendChild(this.carousel)
+    this.carousel.appendChild(this.title)
     this.carousel.appendChild(this.carouselContainer)
   }
 
@@ -165,7 +190,7 @@ class Carousel {
     this.options = Object.assign({}, {
       slideToScroll: 1,
       slideVisible: 1,
-      loop :false
+      loop: false
     }, options)
     this.carousel = this.object.carousel // let root grafikart
     this.carouselContainer = this.object.carouselContainer // let container grafikart
@@ -173,6 +198,7 @@ class Carousel {
     this.moveCallbacks = []
     objectCategory.listFilms.then(element => this.setStyle(element))
     this.createNavigation()
+    // eslint-disable-next-line n/no-callback-literal
     this.moveCallbacks.forEach(cb => cb(0))
   };
 
@@ -182,9 +208,8 @@ class Carousel {
   setStyle (list = []) {
     // eslint-disable-next-line no-undef
     const ratio = this.object.numberElementInCategories / this.options.slideVisible
-    console.log(ratio)
     this.carouselContainer.style.width = (ratio * 100) + '%'
-    let options = this.options.slideVisible
+    const options = this.options.slideVisible
     // eslint-disable-next-line no-return-assign
     list.forEach(function (element) {
       element.filmContainer.style.width = ((100 / options) / ratio + '%')
@@ -221,11 +246,11 @@ class Carousel {
       } else {
         prevButton.classList.remove('carousel__prev--hidden')
       }
-      if(this.currentItem + this.options.slideVisible + 1 >= this.object.numberElementInCategories) {
+      if (this.currentItem + this.options.slideVisible + 1 >= this.object.numberElementInCategories) {
         nextButton.classList.add('carousel__next--hidden')
       } else {
         nextButton.classList.remove('carousel__next--hidden')
-      } 
+      }
     })
   }
 
@@ -259,10 +284,9 @@ class Carousel {
    * Rajoute un écouteur qui écoute le déplacement du carousel
    * @param {moveCallback} cb
    */
-   onMove (cb) {
+  onMove (cb) {
     this.moveCallbacks.push(cb)
   }
-
 }
 
 // eslint-disable-next-line no-unused-vars
