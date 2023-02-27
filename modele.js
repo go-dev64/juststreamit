@@ -22,10 +22,9 @@ class Film {
     this.filmContainer.dataset.id = this.id
     this.filmContainer.className = 'item'
     // creation d'une balise image du film
-    this.imageContainer = document.createElement('div')
+    this.imageContainer = document.createElement('img')
     this.imageContainer.className = 'item__image'
-    this.imageFilm = document.createElement('img')
-    this.imageFilm.src = this.urlImg
+    this.imageContainer.src = this.urlImg
     // creation d'une balise container pour les infos du film
     this.infoContainer = document.createElement('div')
     this.infoContainer.className = 'item__info'
@@ -43,7 +42,6 @@ class Film {
     this.element.appendChild(this.filmContainer)
     this.filmContainer.appendChild(this.imageContainer)
     this.filmContainer.appendChild(this.infoContainer)
-    this.imageContainer.appendChild(this.imageFilm)
     this.infoContainer.appendChild(this.titleFilm)
     this.infoContainer.appendChild(this.filmBouton)
     this.infoContainer.appendChild(this.descriptionFilm)
@@ -246,7 +244,7 @@ class Carousel {
       } else {
         prevButton.classList.remove('carousel__prev--hidden')
       }
-      if (this.currentItem + this.options.slideVisible + 1 >= this.object.numberElementInCategories) {
+      if (this.currentItem + this.options.slideVisible >= this.object.numberElementInCategories) {
         nextButton.classList.add('carousel__next--hidden')
       } else {
         nextButton.classList.remove('carousel__next--hidden')
@@ -288,32 +286,9 @@ class Carousel {
   }
 }
 
-const elementClicked = document.addEventListener('click', function (e) {
-  const element = document.getElementsByClassName(e)
-  console.log(e)
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * lancement des fonctions!!!!!!!!
- * 
+ *
  */
 
 // eslint-disable-next-line no-unused-vars
@@ -353,3 +328,109 @@ document.addEventListener('DOMContentLoaded', function () {
     slideVisible: 4
   })
 })
+
+
+function createHtmlElmentModal (infoFilm) {
+  debugger
+  const body = document.querySelector('body')
+  const modal = document.createElement('aside')
+  modal.className = 'modal'
+  modal.style.display = 'none'
+  const close = document.createElement('span')
+  close.className = 'close__modal'
+  // image du film
+
+  const imageFilm = document.createElement('img')
+  imageFilm.className = 'modal__film__img'
+  imageFilm.src = infoFilm.image_url
+
+  // tittre du film
+  const titleFilm = document.createElement('h2')
+  titleFilm.className = 'modal__film__title'
+  titleFilm.innerText = infoFilm.title
+
+  // info film
+  const listInfoFilm = document.createElement('ul')
+  listInfoFilm.className = 'info__film'
+
+  // genre complet du film
+  const genreFilm = document.createElement('li')
+  genreFilm.className = 'genre__film'
+  genreFilm.innerText = `Genre : ${infoFilm.genres}`
+
+  // date de sortie
+  const date = document.createElement('li')
+  date.className = 'date__film'
+  date.innerText = `Année de sortie : ${infoFilm.year}`
+
+  // son rated
+  const rated = document.createElement('li')
+  rated.className = 'rated__film'
+  rated.innerText = `Nombre évaluation : ${infoFilm.rated}`
+
+  // son score IMDB
+  const scoreImdb = document.createElement('li')
+  scoreImdb.className = 'score_film'
+  scoreImdb.innerText = `Note IMDB: ${infoFilm.imdb_score}`
+
+  // son realisateur
+  const real = document.createElement('li')
+  real.className = 'real__film'
+  real.innerText = `Réalisateur: ${infoFilm.directors}`
+
+  // liste des acteur
+  const actors = document.createElement('li')
+  actors.className = 'actors__film'
+  actors.innerText = `Acteurs: ${infoFilm.actors}`
+
+  // sa durée
+  const duration = document.createElement('li')
+  duration.innerText = `Durée: ${infoFilm.duration} minutes`
+
+  // pays d'origine
+  const country = document.createElement('li')
+  country.className = 'country__film'
+  country.innerText = `Pays: ${infoFilm.countries}`
+
+  // resultat box office
+  const boxOffice = document.createElement('li')
+  boxOffice.innerText = `Nombre entrée au Box Office: ${infoFilm.worldwide_gross_income}`
+
+  // resume du film
+  const resume = document.createElement('li')
+  resume.innerText = `Résumé: ${infoFilm.long_description}`
+
+  // rattachement au parent
+  body.appendChild(modal)
+  modal.appendChild(close)
+  modal.appendChild(imageFilm)
+  modal.appendChild(titleFilm)
+  modal.appendChild(listInfoFilm)
+  listInfoFilm.appendChild(genreFilm)
+  listInfoFilm.appendChild(date)
+  listInfoFilm.appendChild(rated)
+  listInfoFilm.appendChild(scoreImdb)
+  listInfoFilm.appendChild(real)
+  listInfoFilm.appendChild(actors)
+  listInfoFilm.appendChild(duration)
+  listInfoFilm.appendChild(country)
+  listInfoFilm.appendChild(boxOffice)
+  listInfoFilm.appendChild(resume)
+}
+
+const target = document.addEventListener('click', async function (event) {
+  loadFilm(event.target)
+}
+)
+
+function openModal (target) {
+  const modal = document.querySelector('.modal')
+  modal.style.display = null
+}
+
+async function loadFilm (target) {
+  const response = await fetch(`${url}${target.parentElement.dataset.id}`)
+  const jsonFilm = await response.json()
+  createHtmlElmentModal(jsonFilm)
+  openModal(target)
+}
