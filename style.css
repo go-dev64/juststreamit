@@ -3,15 +3,20 @@ body, html {
     padding: 0;
     min-height: 100%;
     overflow-x: hidden;
+    display: flex;
+    justify-content: center;
     
 }
 
 body {
+    max-width: 1400px;
     font-family: sans-serif;
     color:whitesmoke;
     background-color: black;
     padding: 10px;
     line-height: 1.4;
+    display: flex;
+    flex-direction: column;
 }
 
 /** headers */
@@ -27,7 +32,7 @@ h1 {
     color: #fffefecd;
     font-style: italic;
     border-bottom: 3px solid  #fffefecd;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .logo {
@@ -100,13 +105,12 @@ carousel
     position: relative;
     align-items: center;
     width: 100%;
-    /**width: 1200px;*/
 }
 
 .carousel__container{
     display: flex;
     flex-direction: row;
-  
+
     transition: transform 0.3s;
     transform: translate3d(0%, 0px, 0px);
 }
@@ -129,7 +133,6 @@ carousel
     background-size: 70px 70px;
     border-radius: 50%;
     top: 50%;
-    margin-top: -25px;
     right: 0;
     box-shadow: 0 15px 35px #3232321a, 0 5px 15px #0000001a;
     cursor: pointer;
@@ -143,6 +146,7 @@ carousel
 .carousel__prev{
    background-image: url(img/fleche_gauche.svg);
    right: auto;
+   margin-right: -25px;
    left: 0px;
 
 }
@@ -152,16 +156,20 @@ carousel
 }
 
 img{
-    margin: 20px;
+    width: 100%;
+    margin:  0px 20px 0px;
 
 }
 
 .item {
-    margin: 40px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: black;
-    box-shadow: 0 15px 35px #3232321a,0 5px 15px #0000001a;
     transition: transform 0.3s;
     transform: translate3d(0, -1px, 0);
+    padding-left: 30px;
+    padding-right: 30px;
   }
   
   .item:hover {
@@ -170,8 +178,7 @@ img{
   
   .item img {
       display: block;
-      width: 100%;
-      height: auto;
+      
   }
   
   

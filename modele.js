@@ -267,7 +267,6 @@ class Carousel {
    * @param {number} index.
    */
   goToItem (index) {
-    debugger
     if (index < 0) {
       index = this.object.numberElementInCategories - this.options.slideVisible
     } else if (index >= this.object.numberElementInCategories || (this.currentItem + this.options.slideVisible >= this.object.numberElementInCategories && index > this.currentItem)) {
@@ -289,6 +288,34 @@ class Carousel {
   }
 }
 
+const elementClicked = document.addEventListener('click', function (e) {
+  const element = document.getElementsByClassName(e)
+  console.log(e)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * lancement des fonctions!!!!!!!!
+ * 
+ */
+
 // eslint-disable-next-line no-unused-vars
 const bestMovies = new Categories('#carousel_best_movies', 'best_movies')
 const action = new Categories('#carousel_cat1', 'Action')
@@ -299,6 +326,30 @@ document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-new
   new Carousel(bestMovies, {
     slideToScroll: 2,
-    slideVisible: 3
+    slideVisible: 4
+  })
+})
+
+document.addEventListener('DOMContentLoaded', function () {
+  // eslint-disable-next-line no-new
+  new Carousel(action, {
+    slideToScroll: 2,
+    slideVisible: 4
+  })
+})
+
+document.addEventListener('DOMContentLoaded', function () {
+  // eslint-disable-next-line no-new
+  new Carousel(comedie, {
+    slideToScroll: 2,
+    slideVisible: 4
+  })
+})
+
+document.addEventListener('DOMContentLoaded', function () {
+  // eslint-disable-next-line no-new
+  new Carousel(scienceFiction, {
+    slideToScroll: 2,
+    slideVisible: 4
   })
 })
