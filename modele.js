@@ -190,28 +190,40 @@ class Carousel {
       slideVisible: 1,
       loop: false
     }, options)
-    this.carousel = this.object.carousel // let root grafikart
-    this.carouselContainer = this.object.carouselContainer // let container grafikart
+    this.isMobile = false
     this.currentItem = 0
     this.moveCallbacks = []
-    objectCategory.listFilms.then(element => this.setStyle(element))
+
+    // modification du DOM
+    this.carousel = this.object.carousel // let root grafikart
+    this.carousel.setAttribute('tabindex', '0',)
+    this.carouselContainer = this.object.carouselContainer // let container grafikart
+    this.object.listFilms.then(element => this.setStyle(element))
     this.createNavigation()
-    // eslint-disable-next-line n/no-callback-literal
+
+    // Evenement
     this.moveCallbacks.forEach(cb => cb(0))
-  };
+    this.onWindowResize ()
+    window.addEventListener('resize', this.onWindowResize.bind(this))
+    this.carousel.addEventListener('keyup', event => {
+        if(event.key === 'ArrowRight' || event.key === 'Right') {
+          this.next()
+        } else if (event.key == 'ArrowLeft' || event.key === 'Left') {
+          this.prev()
+        }
+    })
+
+  }; 
 
   /**
    * Redimensions les elements en fonction de la taille de la fenetres
    */
   setStyle (list = []) {
     // eslint-disable-next-line no-undef
-    const ratio = this.object.numberElementInCategories / this.options.slideVisible
+    const ratio = this.object.numberElementInCategories / this.slideVisible
     this.carouselContainer.style.width = (ratio * 100) + '%'
-    const options = this.options.slideVisible
     // eslint-disable-next-line no-return-assign
-    list.forEach(function (element) {
-      element.filmContainer.style.width = ((100 / options) / ratio + '%')
-    })
+    list.forEach((element) => element.filmContainer.style.width = ((100 / this.slideVisible) / ratio + '%'))
   };
 
   /**
@@ -244,7 +256,7 @@ class Carousel {
       } else {
         prevButton.classList.remove('carousel__prev--hidden')
       }
-      if (this.currentItem + this.options.slideVisible >= this.object.numberElementInCategories) {
+      if (this.currentItem + this.slideVisible >= this.object.numberElementInCategories) {
         nextButton.classList.add('carousel__next--hidden')
       } else {
         nextButton.classList.remove('carousel__next--hidden')
@@ -253,11 +265,11 @@ class Carousel {
   }
 
   next () {
-    this.goToItem(this.currentItem + this.options.slideToScroll)
+    this.goToItem(this.currentItem + this.slideToScroll)
   }
 
   prev () {
-    this.goToItem(this.currentItem - this.options.slideToScroll)
+    this.goToItem(this.currentItem - this.slideToScroll)
   }
 
   /**
@@ -266,9 +278,18 @@ class Carousel {
    */
   goToItem (index) {
     if (index < 0) {
-      index = this.object.numberElementInCategories - this.options.slideVisible
-    } else if (index >= this.object.numberElementInCategories || (this.currentItem + this.options.slideVisible >= this.object.numberElementInCategories && index > this.currentItem)) {
-      index = 0
+      if ( this.options.loop) {
+        index = this.object.numberElementInCategories - this.slideVisible
+      } else {
+        return
+      }
+    } else if (index >= this.object.numberElementInCategories || (
+      this.currentItem + this.slideVisible >= this.object.numberElementInCategories && index > this.currentItem)) {
+        if (this.options.loop) {
+          index = 0
+        } else {
+          return
+        }
     }
     // eslint-disable-next-line prefer-const
     let translateX = index * -100 / this.object.numberElementInCategories
@@ -283,6 +304,29 @@ class Carousel {
    */
   onMove (cb) {
     this.moveCallbacks.push(cb)
+  }
+
+  onWindowResize () {
+    let mobile = window.innerWidth < 800
+    if (mobile !== this.isMobile) {
+      this.isMobile = mobile
+      this.setStyle()
+      this.moveCallbacks.forEach(cb => cb(this.currentItem))
+    }
+  }
+
+  /**
+   * @returns (numbers)
+   */
+  get slideToScroll () {
+    return this.isMobile ? 1 : this.options.slideToScroll
+  }
+
+  /**
+   * @returns (numbers)
+   */
+  get slideVisible () {
+    return this.isMobile ? 1 : this.options.slideVisible
   }
 }
 
