@@ -191,10 +191,9 @@ carousel
 }
 
 .modal-wrapper {
-    overflow: auto;
     width: 80%;
     max-width: calc(100vh -20 px);
-    max-height: calc(100vh -20 px);
+    max-height: 600px;
 
     padding: 20px;
     background-color: gray;

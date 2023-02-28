@@ -14,6 +14,16 @@ class Film {
     this.urlImg = options.image_url
     this.descritpion = options.description
     this.index = index
+    this.genres = options.genres
+    this.date = options.year
+    this.rated = options.rated
+    this.scoreImdb = options.imdb_score
+    this.director = options.directors
+    this.actors = options.actors
+    this.duration = options.duration
+    this.country = options.countries
+    this.resultBoxOffice = options.worldwide_gross_income
+    this.longDescritpion = options.long_description
   }
 
   createHtmlElement () {
@@ -45,6 +55,95 @@ class Film {
     this.infoContainer.appendChild(this.titleFilm)
     this.infoContainer.appendChild(this.filmBouton)
     this.infoContainer.appendChild(this.descriptionFilm)
+  }
+
+  createElementModal () {
+    const body = document.querySelector('body')
+    const modal = document.createElement('aside')
+    modal.className = 'modal'
+    modal.style.display = 'none'
+    modal.setAttribute('aria-hidden', 'true')
+    const close = document.createElement('button')
+    close.className = 'close__modal'
+    close.innerText = 'Fermer'
+    // image du film
+
+    const imageFilm = document.createElement('img')
+    imageFilm.className = 'modal__film__img'
+    imageFilm.src = this.urlImg
+
+    // tittre du film
+    const titleFilm = document.createElement('h2')
+    titleFilm.className = 'modal__film__title'
+    titleFilm.innerText = this.title
+
+    // info film
+    const listInfoFilm = document.createElement('ul')
+    listInfoFilm.className = 'info__film'
+
+    // genre complet du film
+    const genreFilm = document.createElement('li')
+    genreFilm.className = 'genre__film'
+    genreFilm.innerText = `Genre : ${this.genres}`
+
+    // date de sortie
+    const date = document.createElement('li')
+    date.className = 'date__film'
+    date.innerText = `Année de sortie : ${this.date}`
+
+    // son rated
+    const rated = document.createElement('li')
+    rated.className = 'rated__film'
+    rated.innerText = `Nombre évaluation : ${this.rated}`
+
+    // son score IMDB
+    const scoreImdb = document.createElement('li')
+    scoreImdb.className = 'score_film'
+    scoreImdb.innerText = `Note IMDB: ${this.scoreImdb}`
+
+    // son realisateur
+    const real = document.createElement('li')
+    real.className = 'real__film'
+    real.innerText = `Réalisateur: ${this.director}`
+
+    // liste des acteur
+    const actors = document.createElement('li')
+    actors.className = 'actors__film'
+    actors.innerText = `Acteurs: ${this.actors}`
+
+    // sa durée
+    const duration = document.createElement('li')
+    duration.innerText = `Durée: ${this.duration} minutes`
+
+    // pays d'origine
+    const country = document.createElement('li')
+    country.className = 'country__film'
+    country.innerText = `Pays: ${this.country}`
+
+    // resultat box office
+    const boxOffice = document.createElement('li')
+    boxOffice.innerText = `Nombre entrée au Box Office: ${this.resultBoxOffice}`
+
+    // resume du film
+    const resume = document.createElement('li')
+    resume.innerText = `Résumé: ${this.longDescritpion}`
+
+    // rattachement au parent
+    body.appendChild(modal)
+    modal.appendChild(close)
+    modal.appendChild(imageFilm)
+    modal.appendChild(titleFilm)
+    modal.appendChild(listInfoFilm)
+    listInfoFilm.appendChild(genreFilm)
+    listInfoFilm.appendChild(date)
+    listInfoFilm.appendChild(rated)
+    listInfoFilm.appendChild(scoreImdb)
+    listInfoFilm.appendChild(real)
+    listInfoFilm.appendChild(actors)
+    listInfoFilm.appendChild(duration)
+    listInfoFilm.appendChild(country)
+    listInfoFilm.appendChild(boxOffice)
+    listInfoFilm.appendChild(resume)
   }
 }
 
@@ -341,6 +440,11 @@ const action = new Categories('#carousel_cat1', 'Action')
 const comedie = new Categories('#carousel_cat2', 'Comedy')
 const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
 
+
+
+/**
+ * appel des carousel sur les differentes catégories
+ */
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-new
   new Carousel(bestMovies, {
@@ -374,14 +478,21 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 
+/**
+ * creation de la modal
+ * @param {*} infoFilm 
+ */
+
+
 function createHtmlElmentModal (infoFilm) {
   debugger
   const body = document.querySelector('body')
   const modal = document.createElement('aside')
   modal.className = 'modal'
   modal.style.display = 'none'
-  const close = document.createElement('span')
+  const close = document.createElement('button')
   close.className = 'close__modal'
+  close.innerText = 'Fermer'
   // image du film
 
   const imageFilm = document.createElement('img')
@@ -462,19 +573,45 @@ function createHtmlElmentModal (infoFilm) {
   listInfoFilm.appendChild(resume)
 }
 
-const target = document.addEventListener('click', async function (event) {
+let modal = null
+
+const target = document.addEventListener('click', function (event) {
   loadFilm(event.target)
 }
 )
 
-function openModal (target) {
-  const modal = document.querySelector('.modal')
-  modal.style.display = null
+function openModal () {
+  const target = document.querySelector('.modal')
+  target.style.display = null
+  target.removeAttribute('aria-hidden')
+  target.setAttribute('aria-modal', 'true')
+  modal = target
+  modal.addEventListener('click', closeModal)
+  //modal.querySelector('close__modal').addEventListener('click', closeModal)
+  //modal.querySelector('modal__stop').addEventListener('click', stopPropagation)
+}
+
+const closeModal = function (event) {
+  if (modal === null) return
+  event.preventDefault()
+  modal.style.display = 'none'
+  modal.setAttribute('aria-hidden', 'true')
+  modal.removeAttribute('aria-modal')
+  modal.removeEventListener('click', closeModal)
+  //modal.querySelector('close__modal').removeEventListener('click', closeModal)
+  //modal.querySelector('modal__stop').removeEventListener('click', stopPropagation)
+  modal = null
+  const aside = document.querySelector('aside')
+  aside.remove()
+}
+
+const stopPropagation = function (event) {
+  event.stopPropagation()
 }
 
 async function loadFilm (target) {
   const response = await fetch(`${url}${target.parentElement.dataset.id}`)
   const jsonFilm = await response.json()
-  createHtmlElmentModal(jsonFilm)
-  openModal(target)
+  new Film('#best_movies', jsonFilm, 1).createElementModal()
+  openModal()
 }
