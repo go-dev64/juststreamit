@@ -63,6 +63,8 @@ class Film {
     modal.className = 'modal'
     modal.style.display = 'none'
     modal.setAttribute('aria-hidden', 'true')
+    const wrapper = document.createElement('div')
+    wrapper.className = 'modal__wrapper'
     const close = document.createElement('button')
     close.className = 'close__modal'
     close.innerText = 'Fermer'
@@ -131,9 +133,10 @@ class Film {
     // rattachement au parent
     body.appendChild(modal)
     modal.appendChild(close)
-    modal.appendChild(imageFilm)
-    modal.appendChild(titleFilm)
-    modal.appendChild(listInfoFilm)
+    modal.appendChild(wrapper)
+    wrapper.appendChild(imageFilm)
+    wrapper.appendChild(titleFilm)
+    wrapper.appendChild(listInfoFilm)
     listInfoFilm.appendChild(genreFilm)
     listInfoFilm.appendChild(date)
     listInfoFilm.appendChild(rated)
