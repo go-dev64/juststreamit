@@ -79,6 +79,9 @@ class Film {
     titleFilm.className = 'modal__film__title'
     titleFilm.innerText = this.title
 
+    const wrapperInfo = document.createElement('div')
+    wrapperInfo.className = 'modal__wrapper__info'
+
     // info film
     const listInfoFilm = document.createElement('ul')
     listInfoFilm.className = 'info__film'
@@ -132,11 +135,11 @@ class Film {
 
     // rattachement au parent
     body.appendChild(modal)
-    modal.appendChild(close)
     modal.appendChild(wrapper)
-    wrapper.appendChild(imageFilm)
     wrapper.appendChild(titleFilm)
-    wrapper.appendChild(listInfoFilm)
+    wrapper.appendChild(wrapperInfo)
+    wrapperInfo.appendChild(imageFilm)
+    wrapperInfo.appendChild(listInfoFilm)
     listInfoFilm.appendChild(genreFilm)
     listInfoFilm.appendChild(date)
     listInfoFilm.appendChild(rated)
@@ -147,6 +150,7 @@ class Film {
     listInfoFilm.appendChild(country)
     listInfoFilm.appendChild(boxOffice)
     listInfoFilm.appendChild(resume)
+    wrapper.appendChild(close)
   }
 }
 
