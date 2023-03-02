@@ -416,14 +416,14 @@ class Carousel {
   }
 
   onWindowResize () {
-    const mobile = window.innerWidth <= 450
-    const tablette = window.innerWidth >= 451 && window.innerWidth < 850
-    if (tablette !== this.tablette) {
-      this.tablette = tablette
+    const mobile = window.innerWidth <= 550
+    const tablette = window.innerWidth >= 551 && window.innerWidth < 850
+    if (mobile !== this.isMobile) {
+      this.isMobile = mobile
       this.setStyle()
       this.moveCallbacks.forEach(cb => cb(this.currentItem))
-    } else if (mobile !== this.isMobile) {
-      this.isMobile = mobile
+    } else if (tablette !== this.tablette) {
+      this.tablette = tablette
       this.setStyle()
       this.moveCallbacks.forEach(cb => cb(this.currentItem))
     }
