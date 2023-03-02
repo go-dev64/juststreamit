@@ -34,6 +34,7 @@ class Film {
     // creation d'une balise image du film
     this.imageContainer = document.createElement('img')
     this.imageContainer.className = 'item__image'
+    this.imageContainer.setAttribute('alt', `le Film : ${this.title}`)
     this.imageContainer.src = this.urlImg
     // creation d'une balise container pour les infos du film
     this.infoContainer = document.createElement('div')
@@ -72,6 +73,7 @@ class Film {
 
     const imageFilm = document.createElement('img')
     imageFilm.className = 'modal__film__img'
+    imageFilm.setAttribute('alt', ` le Film : ${this.title}`)
     imageFilm.src = this.urlImg
 
     // tittre du film
@@ -384,18 +386,18 @@ class Carousel {
    */
   goToItem (index) {
     if (index < 0) {
-      if ( this.options.loop) {
+      if (this.options.loop) {
         index = this.object.numberElementInCategories - this.slideVisible
       } else {
         return
       }
     } else if (index >= this.object.numberElementInCategories || (
       this.currentItem + this.slideVisible >= this.object.numberElementInCategories && index > this.currentItem)) {
-        if (this.options.loop) {
-          index = 0
-        } else {
-          return
-        }
+      if (this.options.loop) {
+        index = 0
+      } else {
+        return
+      }
     }
     // eslint-disable-next-line prefer-const
     let translateX = index * -100 / this.object.numberElementInCategories
@@ -446,8 +448,6 @@ const bestMovies = new Categories('#carousel_best_movies', 'best_movies')
 const action = new Categories('#carousel_cat1', 'Action')
 const comedie = new Categories('#carousel_cat2', 'Comedy')
 const scienceFiction = new Categories('#carousel_cat3', 'Sci-Fi')
-
-
 
 /**
  * appel des carousel sur les differentes catégories
@@ -500,19 +500,20 @@ function openModal () {
   target.setAttribute('aria-modal', 'true')
   modal = target
   modal.addEventListener('click', closeModal)
-  // modal.querySelector('close__modal').addEventListener('click', closeModal)
-  // modal.querySelector('modal__stop').addEventListener('click', stopPropagation)
+  modal.querySelector('.close__modal').addEventListener('click', closeModal)
+  modal.querySelector('.close__modal').addEventListener('click', stopPropagation)
 }
 
 const closeModal = function (event) {
-  if (modal === null) return
+  const element = event.target.className
+  if (element !== 'close__modal') return
   event.preventDefault()
   modal.style.display = 'none'
   modal.setAttribute('aria-hidden', 'true')
   modal.removeAttribute('aria-modal')
   modal.removeEventListener('click', closeModal)
-  // modal.querySelector('close__modal').removeEventListener('click', closeModal)
-  // modal.querySelector('modal__stop').removeEventListener('click', stopPropagation)
+  modal.querySelector('.close__modal').removeEventListener('click', closeModal)
+  modal.querySelector('.close__modal').removeEventListener('click', stopPropagation)
   modal = null
   const aside = document.querySelector('aside')
   aside.remove()

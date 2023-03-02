@@ -21,16 +21,20 @@ body {
 
 /** headers */
 header {
+    overflow: hidden;
     position: fixed;
     background-color: black;
     z-index: 1;
     top:0px;
-    left: 0px;
     width: 100%;
     height: 50px;
     display: flex;
     align-items: center;
     flex-direction: row;
+}
+
+main {
+    top: 50px
 }
 
 
@@ -64,7 +68,7 @@ h1 {
 }
 /** headers */
 
-/** main */
+
 
 /** best film  */
 
@@ -120,11 +124,7 @@ h1 {
     text-align: center;
 }
 
-
-
 /** best film  */
-
-
 
 .container{
     padding: 20px 0px 20px 20px;
@@ -226,33 +226,19 @@ carousel
 }
 
 .modal__wrapper {
+    max-width: 1200px;
     display: flex;
-    justify-content: center;
     width: 80%;
     height: auto;
     padding: 20px;
     background-color: gray;
     border-radius: 20px;
-    align-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
 
 .modal__wrapper__info{
     display:flex;
     flex-direction: row;
-}
-
-.modal__film__img {
-   
-}
-
-.info__film {
-    align-items: flex-start;
-   
-
-}
-
-.modal__wrapper button {
-    justify-self: center;
-   
+    align-items: center;
 }
