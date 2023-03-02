@@ -299,6 +299,7 @@ class Carousel {
       loop: false
     }, options)
     this.isMobile = false
+    this.table = false
     this.currentItem = 0
     this.moveCallbacks = []
 
@@ -415,8 +416,13 @@ class Carousel {
   }
 
   onWindowResize () {
-    const mobile = window.innerWidth < 850
-    if (mobile !== this.isMobile) {
+    const mobile = window.innerWidth <= 450
+    const tablette = window.innerWidth >= 451 && window.innerWidth < 850
+    if (tablette !== this.tablette) {
+      this.tablette = tablette
+      this.setStyle()
+      this.moveCallbacks.forEach(cb => cb(this.currentItem))
+    } else if (mobile !== this.isMobile) {
       this.isMobile = mobile
       this.setStyle()
       this.moveCallbacks.forEach(cb => cb(this.currentItem))
@@ -427,14 +433,26 @@ class Carousel {
    * @returns (numbers)
    */
   get slideToScroll () {
-    return this.isMobile ? 1 : this.options.slideToScroll
+    if (this.isMobile) {
+      return 1
+    } else if (this.tablette) {
+      return 2
+    } else {
+      return this.options.slideToScroll
+    }
   }
 
   /**
    * @returns (numbers)
    */
   get slideVisible () {
-    return this.isMobile ? 1 : this.options.slideVisible
+    if (this.isMobile) {
+      return 1
+    } else if (this.tablette) {
+      return 2
+    } else {
+      return this.options.slideVisible
+    }
   }
 }
 
@@ -487,9 +505,13 @@ document.addEventListener('DOMContentLoaded', function () {
 let modal = null
 
 const target = document.addEventListener('click', function (event) {
+  const theBestFilm = document.querySelector('#best_film')
   const element = event.target.className
-  if (element !== 'item__image') return
-  loadFilm(event.target)
+  if (element === 'item__image') {
+    loadFilm(event.target.parentElement.dataset.id)
+  } else if (theBestFilm.contains(event.target)) {
+    loadFilm(theBestFilm.firstElementChild.dataset.id)
+  }
 }
 )
 
@@ -523,8 +545,8 @@ const stopPropagation = function (event) {
   event.stopPropagation()
 }
 
-async function loadFilm (target) {
-  const response = await fetch(`${url}${target.parentElement.dataset.id}`)
+async function loadFilm (idFilm) {
+  const response = await fetch(`${url}${idFilm}`)
   const jsonFilm = await response.json()
   new Film('#best_movies', jsonFilm, 1).createElementModal()
   openModal()
