@@ -13,7 +13,6 @@ body {
     font-family: sans-serif;
     color:whitesmoke;
     background-color: black;
-    padding: 10px;
     line-height: 1.4;
     display: flex;
     flex-direction: column;
@@ -23,7 +22,7 @@ body {
 header {
     overflow: hidden;
     position: fixed;
-    background-color: black;
+    background: linear-gradient(to top, rgba(255,255,255,0) 5%, rgba(0,0,0,1) 100%);
     z-index: 1;
     top:0px;
     width: 100%;
@@ -33,9 +32,6 @@ header {
     flex-direction: row;
 }
 
-main {
-    margin-top: 50px;
-}
 
 
 h1 {
@@ -43,6 +39,7 @@ h1 {
     font-style: italic;
     border-bottom: 3px solid  #fffefecd;
     font-size: 20px;
+    padding-left: 15px
 }
 
 .logo {
@@ -68,59 +65,72 @@ h1 {
 }
 /** headers */
 
-
-
 /** best film  */
 
 #best_film {
-    display: flex;
-    justify-content: center;
+    position:relative;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
 }
 
 #best_film .item {
-    max-width: 1000px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    height: 100%;
+    width: 100%;
     margin: 0;
-    
 }
 
 #best_film .item__image {
     order: 2;
-    max-height: 360px;
+    object-position: right top;
+    max-height: 550px;
+    min-height: 300px;
+    height: auto;
     width: 100%;
     object-fit: contain;
+    padding: 0px 5px;
 }
 
 
 #best_film .item__info{
-    height: 100%;
+    margin-top: 55px;
+    margin-left: 15px;
+    align-self: stretch;
+    height: auto;
+    width: auto;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
-    justify-content: space-around;
 }
 
 #best_film h3 {
     font-style: italic;
     font-weight:bolder;
-    font-size: 2.5rem;
-    margin: 20px 0px 30px 0px;
+    font-size: 4vw;
+    padding: 0px;
+    margin: 0px;
 }
 
 #best_film button {
+    background-image: url(img/playbutton_113628.svg);
+    background-repeat: no-repeat;
+    background-position: 10px;
+    background-size: 15%;
     color: black;
-    border-radius: 10px;
-    height: 2.5rem;
-    width: 25%;
-    text-align: center;
+    border-radius: 5px;
+    height: 40px;
+    width: 100px;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 600;
+    padding-right: 0px;
+    padding-left: 20px;
 }
 
 #best_film p {
     text-align: center;
+    font-size: 1.5rem;
 }
 /** best film  */
 
@@ -253,8 +263,22 @@ carousel
     .modal__wrapper__info ul{
         align-self: start;
     }
+
+    #best_film {
+        margin-top: 50px;
+    }
+
+    #best_film .item__info{
+        margin: 5px;
+        justify-content: space-around;
+    }
+
+    #best_film p { 
+        font-size: 15px;
+        margin-bottom: 0px;
+    }
 }
-@media screen and (max-width: 600px){
+@media screen and (max-width: 550px){
 
 
 
