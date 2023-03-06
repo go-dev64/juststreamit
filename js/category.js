@@ -65,40 +65,15 @@ export class Categories {
     return list
   }
 
-  defineTitleCategory (nameOfCategory) {
-    let title = ''
-    switch (nameOfCategory) {
-      case 'best_movies':
-        title = 'Les Meilleures Films'
-        break
-      case 'Action':
-        title = 'Les Meilleures Films d\'Action'
-        break
-      case 'Comedy':
-        title = 'Les Meilleures Comédies'
-        break
-      case 'Sci-Fi':
-        title = 'Les Meilleures Films de Sciences-Fiction'
-        break
-      default:
-        title = 'Categorie'
-    }
-    return title
-  }
-
   /**
    * creation des element html pour le carousel
    */
   createHtmlElementCarousel () {
     this.carousel = document.createElement('div')
     this.carousel.className = 'carousel'
-    this.title = document.createElement('h1')
-    this.title.className = 'category_title'
-    this.title.innerText = this.defineTitleCategory(this.category)
     this.carouselContainer = document.createElement('div')
     this.carouselContainer.className = 'carousel__container'
     this.parent.appendChild(this.carousel)
-    this.carousel.appendChild(this.title)
     this.carousel.appendChild(this.carouselContainer)
   }
 
