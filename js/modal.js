@@ -1,4 +1,4 @@
-import { url } from './category.js'
+import { url } from './main.js'
 import { Film } from './film.js'
 
 let modal = null

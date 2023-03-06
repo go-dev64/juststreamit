@@ -1,6 +1,5 @@
 import { Film } from './film.js'
-
-export const url = 'http://127.0.0.1:8000/api/v1/titles/'
+import { url } from './main.js'
 
 export class Categories {
   /**

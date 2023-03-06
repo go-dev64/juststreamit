@@ -2,6 +2,8 @@ import { Categories } from './category.js'
 import { Carousel } from './carousel.js'
 import { target } from './modal.js'
 
+export const url = 'http://127.0.0.1:8000/api/v1/titles/'
+
 /**
  * Create catégories
  *
@@ -25,7 +27,6 @@ for (const element in listCategories) {
     })
   })
 }
-console.log('toto')
 /**
  * launch listener for modal
  */
