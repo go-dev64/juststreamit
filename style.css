@@ -34,6 +34,8 @@ header {
 
 
 
+
+
 h1 {
     color: #fffefecd;
     font-style: italic;
@@ -211,9 +213,12 @@ carousel
     object-fit: contain;
     padding: 0rem 2.5rem 0rem 2.5rem;
   }
+  
+
   .item__info {
       display: none;
   }
+
 
 /** modal */
 .modal {
@@ -265,7 +270,7 @@ carousel
     }
 
     #best_film {
-        margin-top: 50px;
+        margin-top: 60px;
     }
 
     #best_film .item__info{
@@ -279,25 +284,24 @@ carousel
     }
 }
 @media screen and (max-width: 550px){
-
-
-
     #best_film .item {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
         margin: 0;
         
     }
     
     #best_film .item__image {
+        order: 1; 
+        object-position: center;
         max-height: 360px;
-        width: 100%;
-        object-fit: contain;
+        padding: 0rem 2.5rem 0rem 2.5rem;
     }
     
     
     #best_film .item__info{
+        order: 2;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -312,13 +316,18 @@ carousel
         font-weight:bolder;
         font-size: 1.5rem;
         text-align: center;
+        padding-bottom: 10px;
+        padding-top: 10px;
     }
     
     #best_film button {
-        display: none;
+        font-size: 16px;
+        height: 30px;
+        width: 80px;
     }
     
     #best_film p {
+        font-size: 16px;
         text-align: center;
     }
 
