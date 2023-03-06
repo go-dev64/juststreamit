@@ -23,6 +23,9 @@ export class Film {
     this.longDescritpion = options.long_description
   }
 
+  /**
+   * Création des divers éléments html pour un film
+   */
   createHtmlElement () {
     // creation d'une balise pour le film
     this.filmContainer = document.createElement('div')
@@ -55,6 +58,9 @@ export class Film {
     this.infoContainer.appendChild(this.descriptionFilm)
   }
 
+  /**
+   * Creation des divers elements html de la fenêtre modal
+   */
   createElementModal () {
     const body = document.querySelector('body')
     const modal = document.createElement('aside')

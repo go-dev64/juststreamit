@@ -56,7 +56,11 @@ export class Categories {
      * creation du meilleur film dans le HtmlParents => .best_film
      */
   async requestBestMovies () {
-    const data = await fetch(`${url}?page_size=${this.numberElementInCategories + 1}&genre=&sort_by=-imdb_score,-votes`)
+    const data = await fetch(`${
+      url
+    }?page_size=${
+      this.numberElementInCategories + 1
+    }&genre=&sort_by=-imdb_score,-votes`)
     const jsonData = await data.json()
     const filmList = jsonData.results
     const bestFilm = filmList.shift()
