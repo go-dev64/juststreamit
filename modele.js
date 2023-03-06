@@ -504,16 +504,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 let modal = null
 
-const target = document.addEventListener('click', function (event) {
-  const theBestFilm = document.querySelector('#best_film')
-  const element = event.target.className
-  if (element === 'item__image') {
-    loadFilm(event.target.parentElement.dataset.id)
-  } else if (theBestFilm.contains(event.target)) {
-    loadFilm(theBestFilm.firstElementChild.dataset.id)
+function target () {
+  document.addEventListener('click', function (event) {
+    const theBestFilm = document.querySelector('#best_film')
+    const element = event.target.className
+    if (element === 'item__image') {
+      loadFilm(event.target.parentElement.dataset.id)
+    } else if (theBestFilm.contains(event.target)) {
+      loadFilm(theBestFilm.firstElementChild.dataset.id)
+    }
   }
+  )
 }
-)
 
 function openModal () {
   const target = document.querySelector('.modal')
@@ -551,3 +553,5 @@ async function loadFilm (idFilm) {
   new Film('#best_movies', jsonFilm, 1).createElementModal()
   openModal()
 }
+
+target()

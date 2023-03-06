@@ -1,8 +1,8 @@
 export class Film {
   /**
-       * @param {element HTML} elementRacine
-       * @param {Objet} option (object json ds info du film)
-       */
+     * @param {element HTML} elementRacine
+     * @param {Objet} option
+     */
 
   constructor (elementRacine, options = {}, index) {
     this.element = elementRacine
@@ -23,9 +23,6 @@ export class Film {
     this.longDescritpion = options.long_description
   }
 
-  /**
-     * creation des element html pour un film
-     */
   createHtmlElement () {
     // creation d'une balise pour le film
     this.filmContainer = document.createElement('div')
@@ -58,14 +55,14 @@ export class Film {
     this.infoContainer.appendChild(this.descriptionFilm)
   }
 
-  /**
-     * creation des element html pour la creation d'une modal
-     */
   createElementModal () {
     const body = document.querySelector('body')
     const modal = document.createElement('aside')
     modal.className = 'modal'
     modal.style.display = 'none'
+    modal.setAttribute('aria-hidden', 'true')
+    const wrapper = document.createElement('div')
+    wrapper.className = 'modal__wrapper'
     const close = document.createElement('button')
     close.className = 'close__modal'
     close.innerText = 'Fermer'
@@ -80,6 +77,9 @@ export class Film {
     const titleFilm = document.createElement('h2')
     titleFilm.className = 'modal__film__title'
     titleFilm.innerText = this.title
+
+    const wrapperInfo = document.createElement('div')
+    wrapperInfo.className = 'modal__wrapper__info'
 
     // info film
     const listInfoFilm = document.createElement('ul')
@@ -130,14 +130,15 @@ export class Film {
 
     // resume du film
     const resume = document.createElement('li')
-    resume.innerText = `Résumé: ${this.longDescription}`
+    resume.innerText = `Résumé: ${this.longDescritpion}`
 
     // rattachement au parent
     body.appendChild(modal)
-    modal.appendChild(close)
-    modal.appendChild(imageFilm)
-    modal.appendChild(titleFilm)
-    modal.appendChild(listInfoFilm)
+    modal.appendChild(wrapper)
+    wrapper.appendChild(titleFilm)
+    wrapper.appendChild(wrapperInfo)
+    wrapperInfo.appendChild(imageFilm)
+    wrapperInfo.appendChild(listInfoFilm)
     listInfoFilm.appendChild(genreFilm)
     listInfoFilm.appendChild(date)
     listInfoFilm.appendChild(rated)
@@ -148,5 +149,6 @@ export class Film {
     listInfoFilm.appendChild(country)
     listInfoFilm.appendChild(boxOffice)
     listInfoFilm.appendChild(resume)
+    wrapper.appendChild(close)
   }
 }
