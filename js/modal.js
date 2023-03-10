@@ -12,7 +12,6 @@ export function target () {
     if (element === 'item__image') {
       loadFilm(event.target.parentElement.dataset.id)
     } else if (element === 'button') {
-      console.log(event.target.parentElement.parentElement.dataset.id)
       loadFilm(event.target.parentElement.parentElement.dataset.id)
     }
   }
