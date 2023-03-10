@@ -1,12 +1,5 @@
 export class Carousel {
   /**
-   * This callback type is called `requestCallback` and is displayed as a global symbol.
-   *
-   * @callback moveCallback
-   * @param {number} index
-   */
-
-  /**
       * @param {object} object category
        * @param {Objet} option
        * @param {Objet} [options.slideToScroll = 1]=> nombre d'éléments à faire defiler
@@ -27,9 +20,9 @@ export class Carousel {
     this.moveCallbacks = []
 
     // modification du DOM
-    this.carousel = this.object.carousel // let root grafikart
+    this.carousel = this.object.carousel
     this.carousel.setAttribute('tabindex', '0')
-    this.carouselContainer = this.object.carouselContainer // let container grafikart
+    this.carouselContainer = this.object.carouselContainer
     this.object.listFilms.then(element => this.setStyle(element))
     this.createNavigation()
 
