@@ -27,9 +27,10 @@ function openModal () {
   target.removeAttribute('aria-hidden')
   target.setAttribute('aria-modal', 'true')
   modal = target
-  modal.addEventListener('click', closeModal)
+  modal.focus()
   modal.querySelector('.close__modal').addEventListener('click', closeModal)
   modal.querySelector('.close__modal').addEventListener('click', stopPropagation)
+  closeModalWithKeyboard()
 }
 
 /**
@@ -37,18 +38,42 @@ function openModal () {
  * @param {evenement} event => click sur le bouton fermer de la modal
  */
 const closeModal = function (event) {
+  if (modal === null) return
   const element = event.target.className
-  if (element !== 'close__modal') return
-  event.preventDefault()
-  modal.style.display = 'none'
-  modal.setAttribute('aria-hidden', 'true')
-  modal.removeAttribute('aria-modal')
-  modal.removeEventListener('click', closeModal)
-  modal.querySelector('.close__modal').removeEventListener('click', closeModal)
-  modal.querySelector('.close__modal').removeEventListener('click', stopPropagation)
-  modal = null
-  const aside = document.querySelector('aside')
-  aside.remove()
+  if (element === 'close__modal' || event.key === 'Escape' || event.key === 'Esc') {
+    event.preventDefault()
+    modal.style.display = 'none'
+    modal.setAttribute('aria-hidden', 'true')
+    modal.removeAttribute('aria-modal')
+    modal.removeEventListener('click', closeModal)
+    modal.querySelector('.close__modal').removeEventListener('click', closeModal)
+    modal.querySelector('.close__modal').removeEventListener('click', stopPropagation)
+    modal = null
+    const aside = document.querySelector('aside')
+    aside.remove()
+  }
+}
+
+const focusInModal = function (e) {
+  e.preventDefault()
+  const button = modal.querySelector('button')
+  button.focus()
+  window.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+      closeModal(event)
+    }
+  })
+}
+
+function closeModalWithKeyboard () {
+  window.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      closeModal(event)
+    }
+    if (event.key === 'Tab' && modal !== null) {
+      focusInModal(event)
+    }
+  })
 }
 
 /**
