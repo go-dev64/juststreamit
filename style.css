@@ -252,9 +252,13 @@ carousel
 }
 
 .modal__wrapper__info{
-    display:flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.modal__film__title{
+    border-bottom: none;
 }
 
 /* media queries*/
@@ -284,7 +288,8 @@ carousel
         .modal__wrapper{
             padding: 10px;
             width: 90%;
-            height: 90%;
+            max-height: 80%;
+            height: auto;
         }
     
         .modal__wrapper__info ul{

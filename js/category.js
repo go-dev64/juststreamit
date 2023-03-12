@@ -36,19 +36,21 @@ export class Categories {
      * recuperation des film de la category et creation des film dans le parentHTML de la categorie
      */
   async requestCategory () {
-    const data = await fetch(
-      `${
-        url
-      }?page_size=${
-        this.numberElementInCategories
-      }&genre=${
-        this.category
-      }&sort_by=-imdb_score,-votes`
-    )
-    const jsonData = await data.json()
-    const filmList = jsonData.results
-    const list = this.createFilm(filmList)
-    return list
+    try{
+      const reponse = await fetch(
+        `${url}?page_size=${this.numberElementInCategories}&genre=${
+          this.category}&sort_by=-imdb_score,-votes`
+      )
+      if (reponse.ok === true) {
+        const jsonData = await reponse.json()
+        const filmList = jsonData.results
+        const list = this.createFilm(filmList)
+        return list
+
+      }
+    }  catch (err) {
+      alert('Problemede connexion serveur')
+    } 
   }
 
   /**
@@ -56,17 +58,26 @@ export class Categories {
      * creation du meilleur film dans le HtmlParents => .best_film
      */
   async requestBestMovies () {
-    const data = await fetch(`${
-      url
-    }?page_size=${
-      this.numberElementInCategories + 1
-    }&genre=&sort_by=-imdb_score,-votes`)
-    const jsonData = await data.json()
-    const filmList = jsonData.results
-    const bestFilm = filmList.shift()
-    const list = this.createFilm(filmList)
-    this.bestFilm(bestFilm.id)
-    return list
+    try {
+      const reponse = await fetch(`${url}?page_size=${this.numberElementInCategories + 1}&genre=&sort_by=-imdb_score,-votes`,
+                  {method : 'GET',
+                  "Accept": "applications/json"
+                    }
+                )
+      if (reponse.ok === true) {
+        const jsonData = await reponse.json()
+        const filmList = jsonData.results
+        const bestFilm = filmList.shift()
+        const list = this.createFilm(filmList)
+        this.bestFilm(bestFilm.id)
+        return list
+      }
+      
+    } catch (error) {
+      alert(error, 'Probleme de connexion serveur')
+    }
+      
+        
   }
 
   /**
@@ -100,9 +111,21 @@ export class Categories {
      * @param {id du film} idFilm
      */
   async bestFilm (idFilm) {
-    const response = await fetch(`${url}${idFilm}`)
-    const jsonFilm = await response.json()
-    const racine = document.querySelector('#best_film')
-    new Film(racine, jsonFilm, 1).createHtmlElement()
+    try {
+      const response = await fetch(`${url}${idFilm}`,
+      {method : 'GET',
+      "Accept": "applications/json"
+      })
+      if (response.ok === true) {
+        const jsonFilm = await response.json()
+        const racine = document.querySelector('#best_film')
+        new Film(racine, jsonFilm, 1).createHtmlElement()
+      }
+      
+    } catch (error) {
+      alert(error, 'Probleme de connexion serveur')
+    }
+    
+    
   }
 }

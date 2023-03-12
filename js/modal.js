@@ -89,8 +89,20 @@ const stopPropagation = function (event) {
  * @param {string} idFilm
  */
 async function loadFilm (idFilm) {
-  const response = await fetch(`${url}${idFilm}`)
-  const jsonFilm = await response.json()
-  new Film('#best_movies', jsonFilm, 1).createElementModal()
-  openModal()
+  try {
+    const response = await fetch(`${url}${idFilm}`, 
+    {method : 'GET',
+    "Accept": "applications/json"
+    })
+    if (response.ok) {
+      const jsonFilm = await response.json()
+      new Film('#best_movies', jsonFilm, 1).createElementModal()
+      openModal()
+    }
+    
+  } catch (error) {
+    alert('Probleme de connexion serveur')
+  }
+    
+       
 }
